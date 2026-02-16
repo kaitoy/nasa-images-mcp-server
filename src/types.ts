@@ -1,9 +1,8 @@
-// NASA API型
 export interface NASAImageItem {
   nasaId: string;
   title: string;
   description: string;
-  imageUrl: string;      // 中サイズ画像のURL
+  imageUrl: string;
   dateCreated: string;
   center: string;
 }
@@ -32,7 +31,6 @@ export interface NASASearchResponse {
   };
 }
 
-// セッション型
 export interface SearchSession {
   query: string;
   images: NASAImageItem[];

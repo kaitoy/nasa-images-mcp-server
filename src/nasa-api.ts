@@ -27,14 +27,14 @@ export async function searchNASAImages(
 
       const data = item.data[0];
 
-      // サムネイルURLを取得
+      // Get thumbnail URL
       let imageUrl = '';
       if (item.links && item.links.length > 0) {
         imageUrl = item.links[0].href;
       }
 
-      // 中サイズ画像を取得する場合、asset manifestから取得
-      // 簡略化のため、サムネイルを使用
+      // Get from asset manifest if retrieving medium-sized images.
+      // Using thumbnail for simplicity.
       if (!imageUrl) continue;
 
       imageItems.push({
@@ -43,7 +43,7 @@ export async function searchNASAImages(
         description: data.description || 'No description available',
         imageUrl: imageUrl,
         dateCreated: data.date_created || '',
-        center: data.center || 'NASA'
+        center: data.center || 'NASA',
       });
     }
 

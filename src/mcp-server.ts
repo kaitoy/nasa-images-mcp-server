@@ -17,7 +17,6 @@ export function createMCPServer(sessionManager: SessionManager, sessionId: strin
     }
   );
 
-  // UIリソースのHTML
   const viewerHtml = `<!DOCTYPE html>
 <html>
 <head>
@@ -132,14 +131,12 @@ export function createMCPServer(sessionManager: SessionManager, sessionId: strin
   </div>
 
   <script>
-    // MCP App クラス（MCP通信用）
     class App {
       constructor() {
         this.ontoolinput = null;
       }
 
       sendMessage(message) {
-        // MCP Host にメッセージを送信
         if (window.parent) {
           window.parent.postMessage(message, '*');
         }
@@ -164,18 +161,15 @@ export function createMCPServer(sessionManager: SessionManager, sessionId: strin
     const app = new App();
     let currentImageUrl = null;
 
-    // ツール入力を受信
     app.ontoolinput = function(input) {
       console.log('Tool input received:', input);
       loadCurrentImage();
     };
 
-    // MCP Hostからのメッセージを受信
     window.addEventListener('message', (event) => {
       console.log('Message received:', event.data);
 
       if (event.data.type === 'resourceData') {
-        // リソースデータを受信
         updateImage(event.data.data);
       }
     });
@@ -191,17 +185,14 @@ export function createMCPServer(sessionManager: SessionManager, sessionId: strin
         '<p class="loading">Searching...</p>';
       document.getElementById('nextBtn').disabled = true;
 
-      // search_nasa_images ツールを呼び出し
       app.callTool('search_nasa_images', { query: query });
 
-      // 少し待ってから画像を読み込む
       setTimeout(() => {
         loadCurrentImage();
       }, 1000);
     }
 
     function loadCurrentImage() {
-      // nasa-image://current リソースを読み取る
       app.readResource('nasa-image://current');
     }
 
@@ -232,10 +223,8 @@ export function createMCPServer(sessionManager: SessionManager, sessionId: strin
     function nextImage() {
       document.getElementById('nextBtn').disabled = true;
 
-      // get_next_image ツールを呼び出し
       app.callTool('get_next_image', {});
 
-      // 少し待ってから画像を読み込む
       setTimeout(() => {
         loadCurrentImage();
       }, 500);
@@ -244,7 +233,6 @@ export function createMCPServer(sessionManager: SessionManager, sessionId: strin
 </body>
 </html>`;
 
-  // UIリソースを登録（MCP Apps Pattern）
   registerAppResource(
     server,
     'NASA Images Viewer',
@@ -263,7 +251,6 @@ export function createMCPServer(sessionManager: SessionManager, sessionId: strin
     })
   );
 
-  // 画像URLリソースを登録（通常のMCPリソース）
   server.registerResource(
     'current_nasa_image_url',
     'nasa-image://current',
@@ -287,7 +274,6 @@ export function createMCPServer(sessionManager: SessionManager, sessionId: strin
     }
   );
 
-  // ツール1: search_nasa_images（MCP Apps Pattern）
   registerAppTool(
     server,
     'search_nasa_images',
@@ -303,7 +289,6 @@ export function createMCPServer(sessionManager: SessionManager, sessionId: strin
       }
     },
     async ({ query }) => {
-      // NASA APIで検索し、セッションに保存
       await sessionManager.search(sessionId, query);
 
       return {
@@ -317,7 +302,6 @@ export function createMCPServer(sessionManager: SessionManager, sessionId: strin
     }
   );
 
-  // ツール2: get_next_image（MCP Apps Pattern）
   registerAppTool(
     server,
     'get_next_image',
