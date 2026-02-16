@@ -47,10 +47,6 @@ function updateImage(imageUrl: string) {
   if (container) {
     container.innerHTML = `
       <img src="${imageUrl}" alt="NASA Image" onload="console.log('Image loaded successfully')">
-      <div class="image-info">
-        <div class="image-title">NASA Image</div>
-        <div class="image-description">Image from NASA's collection</div>
-      </div>
     `;
   }
 
