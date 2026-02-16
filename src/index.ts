@@ -28,8 +28,10 @@ const app = createMcpExpressApp({
   ...(MCP_ALLOWED_HOSTS && MCP_ALLOWED_HOSTS.length > 0 && { allowedHosts: MCP_ALLOWED_HOSTS })
 });
 
-// Output access logs in httpd log format
-app.use(morgan('combined'));
+// Output access logs in httpd log format (skip /health endpoint)
+app.use(morgan('combined', {
+  skip: (req, _res) => req.path === '/health'
+}));
 
 // CORS settings (expose MCP-related headers)
 app.use(cors({
