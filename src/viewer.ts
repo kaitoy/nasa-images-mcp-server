@@ -2,6 +2,8 @@ import { App } from '@modelcontextprotocol/ext-apps';
 
 const app = new App({ name: 'NASA Images Viewer', version: '1.0.0' });
 
+let timeoutId: number = 0;
+
 app.ontoolinput = async (_) => {
   await loadCurrentImage();
 }
@@ -22,6 +24,10 @@ async function loadCurrentImage() {
 
     if (imageUrl) {
       updateImage(imageUrl);
+
+      timeoutId = window.setTimeout(() => {
+        nextImage();
+      }, 8000);
     }
   } catch (error) {
     console.error('Error loading image:', error);
@@ -42,20 +48,17 @@ function updateImage(imageUrl: string) {
   }
 
   const container = document.getElementById('imageContainer');
-  const nextBtn = document.getElementById('nextBtn') as HTMLButtonElement;
 
   if (container) {
     container.innerHTML = `
       <img src="${imageUrl}" alt="NASA Image" onload="console.log('Image loaded successfully')">
     `;
   }
-
-  if (nextBtn) {
-    nextBtn.disabled = false;
-  }
 }
 
 async function searchImages() {
+  window.clearTimeout(timeoutId);
+
   const queryInput = document.getElementById('searchQuery') as HTMLInputElement;
   const query = queryInput?.value.trim();
 
@@ -65,13 +68,9 @@ async function searchImages() {
   }
 
   const container = document.getElementById('imageContainer');
-  const nextBtn = document.getElementById('nextBtn') as HTMLButtonElement;
 
   if (container) {
     container.innerHTML = '<p class="loading">Searching...</p>';
-  }
-  if (nextBtn) {
-    nextBtn.disabled = true;
   }
 
   try {
@@ -89,12 +88,6 @@ async function searchImages() {
 }
 
 async function nextImage() {
-  const nextBtn = document.getElementById('nextBtn') as HTMLButtonElement;
-
-  if (nextBtn) {
-    nextBtn.disabled = true;
-  }
-
   try {
     await app.callServerTool({
       name: 'get_next_image',
@@ -113,15 +106,10 @@ async function nextImage() {
 // Set up event listeners
 document.addEventListener('DOMContentLoaded', () => {
   const searchBtn = document.getElementById('searchBtn');
-  const nextBtn = document.getElementById('nextBtn');
   const searchQuery = document.getElementById('searchQuery') as HTMLInputElement;
 
   if (searchBtn) {
     searchBtn.addEventListener('click', searchImages);
-  }
-
-  if (nextBtn) {
-    nextBtn.addEventListener('click', nextImage);
   }
 
   // Allow search on Enter key
