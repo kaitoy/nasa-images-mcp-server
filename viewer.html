@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NASA Images Viewer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #0a0e27;
+      color: #fff;
+    }
+    .container {
+      background: #1a1f3a;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+    h1 {
+      color: #4a9eff;
+      margin-top: 0;
+    }
+    .search-form {
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      width: 70%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #4a9eff;
+      border-radius: 5px;
+      background: #0a0e27;
+      color: #fff;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #4a9eff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    button:hover {
+      background: #357abd;
+    }
+    button:disabled {
+      background: #666;
+      cursor: not-allowed;
+    }
+    .image-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+    .image-info {
+      margin-top: 15px;
+      text-align: left;
+    }
+    .image-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #4a9eff;
+      margin-bottom: 10px;
+    }
+    .image-description {
+      color: #ccc;
+      line-height: 1.6;
+    }
+    .loading {
+      text-align: center;
+      color: #4a9eff;
+      font-size: 18px;
+    }
+    .error {
+      color: #ff4444;
+      padding: 10px;
+      background: #331111;
+      border-radius: 5px;
+    }
+    .controls {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 NASA Images Explorer</h1>
+
+    <div class="search-form">
+      <input type="text" id="searchQuery" placeholder="Search NASA images (e.g., apollo 11, mars rover)">
+      <button id="searchBtn">Search</button>
+    </div>
+
+    <div id="imageContainer" class="image-container">
+      <p class="loading">Search for NASA images to get started</p>
+    </div>
+
+    <div class="controls">
+      <button id="nextBtn" disabled>Next Image</button>
+    </div>
+  </div>
+
+  <script type="module" src="/src/viewer.ts"></script>
+</body>
+</html>
