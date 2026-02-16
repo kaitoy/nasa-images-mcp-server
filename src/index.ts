@@ -157,6 +157,13 @@ app.get('/mcp', async (req, res) => {
       return;
     }
 
+    const lastEventId = req.headers['last-event-id'] as string | undefined;
+    if (lastEventId) {
+      console.log(`Client reconnecting with Last-Event-ID: ${lastEventId}`);
+    } else {
+      console.log(`Establishing new SSE stream for session ${sessionId}`);
+    }
+
     // Handle SSE stream
     await transports.get(sessionId)?.handleRequest(req, res);
   } catch (error) {
