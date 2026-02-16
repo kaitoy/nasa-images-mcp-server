@@ -39,9 +39,16 @@ export function createMCPServer(sessionManager: SessionManager, sessionId: strin
           {
             uri: 'ui://nasa-images/viewer',
             mimeType: RESOURCE_MIME_TYPE,
-            text: viewerHtml
-          }
-        ]
+            text: viewerHtml,
+            _meta: {
+              ui: {
+                csp: {
+                  resourceDomains: ['images-assets.nasa.gov'],
+                },
+              },
+            },
+          },
+        ],
       };
     }
   );
