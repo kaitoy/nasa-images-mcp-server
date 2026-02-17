@@ -9,6 +9,8 @@ A project to search NASA's image library using an MCP server and display images 
 - **Image Navigation**: Display search results sequentially
 - **Session Management**: Stateful session management
 
+![screenshot](nasa-images-mcp.gif)
+
 ## Requirements
 
 - Node.js 18 or higher
