@@ -55,10 +55,18 @@
     .image-container {
       text-align: center;
       margin: 20px 0;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #0a0e27;
+      border-radius: 8px;
     }
     img {
       max-width: 100%;
-      height: auto;
+      max-height: 100%;
+      object-fit: contain;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     }
