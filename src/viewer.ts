@@ -50,9 +50,23 @@ function updateImage(imageUrl: string) {
   const container = document.getElementById('imageContainer');
 
   if (container) {
-    container.innerHTML = `
-      <img src="${imageUrl}" alt="NASA Image" onload="console.log('Image loaded successfully')">
-    `;
+    const existingImg = container.querySelector('img');
+
+    if (existingImg) {
+      // Fade out existing image
+      existingImg.classList.add('fade-out');
+
+      setTimeout(() => {
+        container.innerHTML = `
+          <img src="${imageUrl}" alt="NASA Image" class="fade-in">
+        `;
+      }, 500); // Match fade-out animation duration
+    } else {
+      // No existing image, just fade in the new one
+      container.innerHTML = `
+        <img src="${imageUrl}" alt="NASA Image" class="fade-in">
+      `;
+    }
   }
 }
 
