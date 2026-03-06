@@ -5,7 +5,12 @@ const app = new App({ name: 'NASA Images Viewer', version: '1.0.0' });
 let timeoutId: number = 0;
 
 app.ontoolinput = async (_) => {
+  console.log('ontoolinput');
   await loadCurrentImage();
+}
+
+app.ontoolresult = async (_) => {
+  console.log('ontoolresult');
 }
 
 async function loadCurrentImage() {
