@@ -43,7 +43,7 @@ export function createMCPServer(sessionManager: SessionManager, sessionId: strin
             _meta: {
               ui: {
                 csp: {
-                  resourceDomains: ['images-assets.nasa.gov'],
+                  resourceDomains: ['https://images-assets.nasa.gov'],
                 },
               },
             },
