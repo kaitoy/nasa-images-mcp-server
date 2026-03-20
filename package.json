@@ -1,6 +1,6 @@
 {
   "name": "@kaitoy/nasa-images-mcp-server",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "MCP server with UI for NASA images",
   "repository": {
     "type": "git",
@@ -9,6 +9,10 @@
   "mcpName": "io.github.kaitoy/nasa-images",
   "type": "module",
   "main": "build/index.js",
+  "files": [
+    "build",
+    "dist"
+  ],
   "bin": {
     "nasa-images-mcp-server": "build/index.js"
   },
