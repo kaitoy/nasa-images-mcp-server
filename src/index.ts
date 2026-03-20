@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import dotenv from 'dotenv';
 import { SessionManager } from './session-manager.js';
 import { startHttpServer } from './http-server.js';
