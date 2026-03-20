@@ -1,6 +1,6 @@
 {
   "name": "@kaitoy/nasa-images-mcp-server",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "MCP server with UI for NASA images",
   "repository": {
     "type": "git",
