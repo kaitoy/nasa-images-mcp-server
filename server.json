@@ -1,17 +1,17 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.kaitoy/nasa-images-mcp-server",
+  "name": "io.github.kaitoy/nasa-images",
   "description": "MCP server with UI for NASA images",
   "repository": {
     "url": "https://github.com/kaitoy/nasa-images-mcp-server",
     "source": "github"
   },
-  "version": "1.1.2",
+  "version": "1.1.3",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@kaitoy/nasa-images-mcp-server",
-      "version": "1.1.2",
+      "version": "1.1.3",
       "transport": {
         "type": "stdio"
       },
