@@ -3,7 +3,7 @@
 A project to search NASA's image library using an MCP server and display images in an interactive UI.
 
 **🌟 Features:**
-- **Streamable HTTP Transport**: Uses the latest MCP HTTP transport protocol
+- **Dual Transport Support**: Supports both stdio and Streamable HTTP transport
 - **Image Search**: Search by keywords using NASA's Images API
 - **Interactive UI**: Beautiful image viewer using MCP Apps Pattern
 - **Image Navigation**: Display search results sequentially
@@ -58,7 +58,59 @@ npm run build
 
 ## Usage
 
-### Start in HTTP Server Mode
+### stdio Mode (Recommended for MCP Clients like Claude Desktop)
+
+In stdio mode, the server communicates via stdin/stdout — no HTTP server is started. Logs are written to stderr.
+
+#### Run with npx (no installation required)
+
+```bash
+npx @kaitoy/nasa-images-mcp-server --stdio
+```
+
+#### Run from local build
+
+Pass the `--stdio` flag to use stdio transport:
+
+```bash
+node build/index.js --stdio
+```
+
+#### Claude Desktop Configuration
+
+**Using npx** (recommended):
+
+```json
+{
+  "mcpServers": {
+    "nasa-images": {
+      "command": "npx",
+      "args": ["-y", "@kaitoy/nasa-images-mcp-server", "--stdio"],
+      "env": {
+        "NASA_API_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+**Using local build**:
+
+```json
+{
+  "mcpServers": {
+    "nasa-images": {
+      "command": "node",
+      "args": ["/path/to/nasa-images-mcp-server/build/index.js", "--stdio"],
+      "env": {
+        "NASA_API_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+### HTTP Server Mode
 
 ```bash
 npm start
@@ -72,9 +124,19 @@ The server will start at `http://localhost:3000`.
 PORT=3001 npm start
 ```
 
-## About Streamable HTTP Transport
+## About Transports
 
-This server uses **Streamable HTTP Transport**, which is the latest transport layer for running the MCP protocol over HTTP.
+### stdio Transport
+
+Suitable for local MCP clients (e.g., Claude Desktop) that launch the server as a subprocess.
+
+- Communicates via stdin/stdout
+- Single session per process
+- No network configuration required
+
+### Streamable HTTP Transport
+
+The latest MCP HTTP transport protocol, suitable for remote or multi-client scenarios.
 
 **Key Features:**
 - ✅ **Stateful Sessions**: Issues a unique session ID for each client
@@ -84,12 +146,18 @@ This server uses **Streamable HTTP Transport**, which is the latest transport la
 
 ## Integration with MCP Clients
 
-### Connecting with MCP Inspector
+### Connecting with MCP Inspector (HTTP mode)
 
 You can test the server using [MCP Inspector](https://github.com/modelcontextprotocol/inspector):
 
 ```bash
 npx @modelcontextprotocol/inspector http://localhost:3000/mcp
+```
+
+### Connecting with MCP Inspector (stdio mode)
+
+```bash
+npx @modelcontextprotocol/inspector node /path/to/nasa-images-mcp-server/build/index.js --stdio
 ```
 
 ### Using with Custom MCP Clients
@@ -207,6 +275,45 @@ HTML UI resource for the image viewer.
 **MIME Type:** `text/html;profile=mcp-app`
 
 ## Architecture
+
+### stdio Mode
+
+```
+┌─────────────────────────────────────────────┐
+│     MCP Client (Claude Desktop, etc.)       │
+│                   ↕ stdin/stdout            │
+└───────────────────┼─────────────────────────┘
+                    │
+┌───────────────────┼─────────────────────────┐
+│  NASA Images MCP Server                     │
+│  ┌────────────────┴──────────────────────┐  │
+│  │  StdioServerTransport                 │  │
+│  └───────────────────────────────────────┘  │
+│  ┌───────────────────────────────────────┐  │
+│  │  McpServer (MCP Apps Pattern)         │  │
+│  │  - registerAppTool(search_nasa...)    │  │
+│  │  - registerAppTool(get_next_image)    │  │
+│  │  - registerAppResource(viewer UI)     │  │
+│  │  - registerResource(image URL)        │  │
+│  └───────────────────────────────────────┘  │
+│  ┌───────────────────────────────────────┐  │
+│  │  Session Manager                      │  │
+│  │  - Manage search state per user       │  │
+│  └───────────────────────────────────────┘  │
+│  ┌───────────────────────────────────────┐  │
+│  │  NASA API Client                      │  │
+│  │  - Image search                       │  │
+│  │  - Image URL retrieval                │  │
+│  └───────────────────────────────────────┘  │
+└───────────────────┼─────────────────────────┘
+                    │ HTTPS
+┌───────────────────┼─────────────────────────┐
+│         NASA Images API                     │
+│  https://images-api.nasa.gov/search         │
+└─────────────────────────────────────────────┘
+```
+
+### HTTP Mode
 
 ```
 ┌─────────────────────────────────────────────┐
